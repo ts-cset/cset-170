@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab 03: Fixing Vulnerabilities</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../assets/slides.css" />
+
+  <style type="text/css" media="screen">
+    code {
+      color: var(--nord8);
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Lab 03: Fixing Vulnerabilities
+  </h1>
+
+  <hr>
+
+  <p>
+    You're going to install and run a pre-built web application and see how secure it is. The name of the lab should be a clue: <em>it's not</em>. And you're going to fix it.  
+  </p>
+
+  <hr>
+
+  <h2>
+    Setup
+  </h2>
+
+  <ul>
+    <li>Install, configure, and run MongoDB
+      <pre><code>
+$ brew install mongodb
+$ sudo makedir -p /data/db
+$ sudo chown -R $USER /data/db
+$ mongod
+      </code></pre>
+    </li>
+    <li>Fork <a href="https://github.com/OWASP/NodeGoat" target="_blank">the NodeGoat project</a></li>
+    <li>Clone your forked repo</li>
+    <li>Configure the project to use your local instance of MongoDB
+      <pre><code>
+# Open config/env/development.js in your editor and uncomment
+# line 8 which points the db connection to your localhost.
+# Then run:
+
+$ npm install
+$ node node_modules/grunt-cli/bin/grunt db-reset:development
+$ npm run db:seed
+      </code></pre>
+    </li>
+    <li>Start the server
+      <pre><code>
+$ npm start
+      </code></pre>
+    </li>
+  </ul>
+
+  <p>
+    You should now be able to see the app running on your machine at <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>
+  </p>
+
+  <hr>
+
+  <h2>
+    Fix It!
+  </h2>
+
+  <p>
+    When you seeded the database, it contained a few user accounts. You can find their usernames and passwords in the project's README. Log in to the app and look around for a bit to get an idea of what it does.
+  </p>
+ 
+  <p>
+    Follow <a href="http://nodegoat.herokuapp.com/tutorial">the tutorial that OWASP provides</a> to fix the problems you learned about in their Top Ten list. Watch the videos they provide of the vulnerabilities and try them on your local version. Try to break it!
+  </p>
+
+  <hr>
+
+  <h2>
+    Grading
+  </h2>
+
+  <p>
+    Make a new new branch in your repo that will contain all of your fixes. You should be committing frequently since this is a fragile app and you're actively trying to break it. When you're done, push the branch to GitHub and submit a PR to your fork, <strong>not the real repo</strong>.
+  </p>
+
+  <p>
+    Submit a link to your PR on the portal for this assignment.
+  </p>
+
+</body>
+</html>
