@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to Security</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../assets/slides.css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+
+# .eight[CSET 170:]
+## .eight[Security and Professional Ethics]
+
+---
+class: middle
+
+# Intro to Security
+
+---
+
+# Agenda
+
+1. [ ] [Overview](#overview)
+2. [ ] [What is Security?](#security)
+3. [ ] [Security Objectives](#objectives)
+4. [ ] [Threat Modeling](#threat-model)
+
+---
+class: middle, center
+
+# How many data breaches have happened this year?
+
+[Wikipedia: List of data breaches](https://en.wikipedia.org/wiki/List_of_data_breaches)
+
+---
+name: overview
+
+# Overview
+
+How does security fit into software development?
+
+- Foundational security concepts
+- Authentication and authorization
+- Awareness of common security issues
+- Techniques to mitigate these issues
+
+---
+
+# Disclaimer
+
+*This course is mainly theory.*
+
+We'll discuss guiding principles and best practices, but every situation is unique and every company/team/project handles it differently according to real-world constraints.
+
+---
+name: security
+
+# What Is Security?
+
+- Is it a property of code?
+- Is it a phase of the development cycle?
+
+---
+count: false
+
+# What Is Security?
+
+- Is it a property of code?
+- Is it a phase of the development cycle?
+
+.eight[Security is the practice of identifying what could go wrong and trying to mitigate the impact for when it does.]
+
+---
+class: middle, center
+
+# It is effectively impossible to assure that a piece of software is secure.
+
+---
+
+# Impossibly Secure
+
+- It doesn't run in a vaccuum. There are outside factors.
+- Security often conflicts with usability and business goals.
+- Humans write software, and humans make mistakes.
+
+Given enough time, any system may eventually be compromised.
+
+---
+
+# Outcomes, not Assurances
+
+Assurance is not affordable.
+
+- You **can't** guarantee prevention.
+- You **can** mitigate the outcome.
+
+---
+
+# Outcomes Are Different
+
+Imagine two blog sites, built with the same technology:
+
+- One is a forum for video game walkthroughs.
+- One is a forum for political activism.
+
+Each site has different security goals.
+
+---
+
+name: objectives
+
+# Security Objectives
+
+- The goals that define the behaviors of a system.
+- Help decide priority and guide development.
+- Created in requirements gathering and planning phase of software development cycle.
+
+---
+
+# Security Objectives
+
+The format:
+
+When .eight[[an actor]] attempts .eight[[a bad action]], the system will .eight[[respond with reaction]].
+
+- **Actor**: a type of user
+- **Action**: something that shouldn't happen, intentional or not
+- **Response**: prevention, monitoring, or something more
+
+---
+name: threat-model
+
+# Threat Modeling
+
+.eight[Formal process to identify and categorize threats to a system.]
+
+1. List all the **Actors** that interact with the system.
+2. List all the **Assets** of the system.
+3. Create model for interaction of each **Actor** with each **Asset**.
+
+*So a system with 3 types of actors and 4 types of assets has 12 interactions, multiplied by the 4 CRUD operations, which is a total of **48 threat vectors**.*
+
+---
+
+# Threat Model
+
+For example, imagine a simple blog where authors can post and manage public articles.
+
+1. Actors?
+
+---
+count: false
+
+# Threat Model
+
+For example, imagine a simple blog where authors can post and manage public articles.
+
+1. Actors:
+  - Authors
+  - Anonymous Readers
+
+---
+
+# Threat Model
+
+For example, imagine a simple blog where authors can post and manage public articles.
+
+1. Actors:
+  - Authors
+  - Anonymous Readers
+2. Assets?
+
+---
+count: false
+
+# Threat Model
+
+For example, imagine a simple blog where authors can post and manage public articles.
+
+1. Actors:
+  - Authors
+  - Anonymous Readers
+2. Assets:
+  - Articles
+  - *Author Accounts*
+
+---
+
+# Threat Model
+
+Imagine all the possible interactions:
+
+<table>
+  <tr>
+    <th>&nbsp;</th>
+    <th class="center middle" colspan="2">Authors</th>
+    <th class="center middle" colspan="2">Anonymous</th>
+  </tr>
+  <tr>
+    <th class="center middle" rowspan="2">Articles</th>
+    <td class="center middle">C</td>
+    <td class="center middle">R</td>
+    <td class="center middle">C</td>
+    <td class="center middle">R</td>
+  </tr>
+  <tr>
+    <td class="center middle">U</td>
+    <td class="center middle">D</td>
+    <td class="center middle">U</td>
+    <td class="center middle">D</td>
+  </tr>
+</table>
+
+How should each actor be able to interact with each asset?
+
+- .fourteen[Always]
+- .thirteen[Sometimes]
+- .eleven[Never]
+
+---
+
+# Threat Model
+
+Imagine all the possible interactions:
+
+<table>
+  <tr>
+    <th>&nbsp;</th>
+    <th class="center middle" colspan="2">Authors</th>
+    <th class="center middle" colspan="2">Anonymous</th>
+  </tr>
+  <tr>
+    <th class="center middle" rowspan="2">Articles</th>
+    <td class="center middle fourteen-bg">C</td>
+    <td class="center middle fourteen-bg">R</td>
+    <td class="center middle eleven-bg">C</td>
+    <td class="center middle fourteen-bg">R</td>
+  </tr>
+  <tr>
+    <td class="center middle thirteen-bg">U</td>
+    <td class="center middle thirteen-bg">D</td>
+    <td class="center middle eleven-bg">U</td>
+    <td class="center middle eleven-bg">D</td>
+  </tr>
+</table>
+
+- .fourteen[Always]
+- .thirteen[Sometimes]
+- .eleven[Never]
+
+---
+
+# Security Objectives
+
+When .eight[[an actor]] attempts .eight[[a bad action]], the system will .eight[[respond with reaction]].
+
+Using this threat model, we can write security objectives for our system:
+
+- When an author attempts to update/delete someone else's article, the system will respond by preventing the action.
+- When an anonymous user attempts to create/update/delete an article, the system will respond by preventing and logging the action.
+
+---
+
+# Using Objectives
+
+- Defined in planning process to help development
+- Can be used to create tests for TDD
+- Can be used to create documentation
+
+---
+
+# Summary
+
+- Security is managing the outcomes of possible interactions within a system so that it meets **well-defined** objectives.
+- Paying attention to outcomes will have more impact than only looking at prevention.
+
+The breaches we looked at earlier could've been mitigated with better security objectives and an expectation that they would be compromised.
+
+---
+class: middle, center
+
+# [Have I Been Pwned?](https://haveibeenpwned.com/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
