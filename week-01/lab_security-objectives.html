@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab: Security Objectives</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../assets/slides.css" />
+
+  <style type="text/css" media="screen">
+    code {
+      color: var(--nord8);
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Lab: Security Objectives
+  </h1>
+
+  <hr>
+
+  <p>
+  For this lab, you are going to work through the <a href="intro-to-security.html#threat-model">Threat Modeling process</a> for an actual application and come up with a short list of <a href="intro-to-security.html#objectives">Security Objectives</a>.
+  </p>
+
+  <p>
+    You've been using a real-world application for many of the labs this semester and this one is no different. However, your group will need to decide on <strong>one</strong> of your applications that you all are familiar with.
+  </p>
+
+  <hr>
+
+  <h2>
+    Instructions
+  </h2>
+
+  <ol>
+    <li>Begin the Threat Modeling process by brainstorming all the different <strong>Actors</strong> that might use your application. Most applications will have at least two, but often more.</li>
+    <li>Then start brainstorming all of the <strong>Assets</strong>. Your threat model will need at least five of them.
+      <ul>
+        <li>A good place to start is your database diagram that shows the unique entity types. Each entity is probably a separate Asset.</li>
+        <li>Pay attention to how your app actually works. Sometimes entities of the same type should be treated differently based on an attribute, like a published news article versus a saved draft.</li>
+        <li>To make this simpler, try to focus on the more tangible Assets. For the blog example, we discussed the articles as opposed to author accounts.</li>
+      </ul>
+    </li>
+    <li>Add your Actors and Assets to a spreadsheet program, like Google Sheets or Microsoft Excel. Actors go across the x-axis and Assets down the y-axis. These headings need to span two columns or rows.</li>
+    <li>Now you can add the four CRUD operations to each Actor/Asset interaction. Color code them according to the <span class="fourteen">Always</span>, <span class="thirteen">Sometimes</span>, and <span class="eleven">Never</span> possibilites. Take your time with this and discuss each circumstance with your group.</li>
+    <li>Open another sheet and make a list of your security objectives. You should have at least eight, but with two or three Actors and at least five Assets you could easily double that.
+      <ul>
+        <li>You can combine the CRUD operations of a single Actor/Asset interaction into a single objective if the response is the same.</li>
+        <li>Most responses will be simply to stop the interaction because mistakes happen more often than malicious intent.</li>
+      </ul>
+    </li>
+    <li>Finally, you should sort your security objectives according to how dangerous they are to your application or your data.</li>
+  </ol>
+
+  <hr>
+
+  <h2>
+    Presentation
+  </h2>
+
+  <p>
+    At the end of class, we'll take five minutes for each group to show off their threat model and list of objectives. You should split up the presentation among your group members. For example, one of you could introduce the app and the actors, another could explain the different assets, and so on.
+  </p>
+
+  <p>
+    <strong>Good luck and have fun!</strong>
+  </p>
+</body>
+</html>
