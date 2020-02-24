@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab: Encryption</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../assets/slides.css" />
+
+  <style type="text/css" media="screen">
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: calc(0.5rem + 1.75vw);
+      line-height: 1.4;
+      max-width: 1000px;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    p, ol, ul, pre, hr,
+    table, blockquote {
+      margin-bottom: 3rem;
+    }
+
+    li ol, li ul {
+      margin-bottom: 0;
+    }
+
+    ol, ul, pre, table, blockquote {
+      padding: 0 1rem;
+    }
+
+    code {
+      background: var(--nord6);
+      border: 1px solid var(--nord5);
+      color: var(--nord10);
+      padding: 0 0.5rem;
+    }
+
+    pre code {
+      display: block;
+      font-size: 80%;
+      padding: 2rem;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Lab: Encryption
+  </h1>
+
+  <hr>
+
+  <p>
+    Congrats! You verified that these are the actual lab instructions.
+  </p>
+
+  <p>
+    In this part of the lab, you're going to use a CLI tool called <code>openssl</code>. You used <code>ssh-keygen</code> and other utilities to create key pairs before, but those are formatted just for SSH. We need openssl for other formats. There are better tools out there, but this one is already installed.
+  </p>
+
+  <hr>
+
+  <h2>
+    Part I: Symmetric Encryption
+  </h2>
+
+  <p>
+    You'll start by replicating what I just did: sending password protected files. First, you'll need a partner. Find someone from across the room.
+  </p>
+
+  <ol>
+    <li>Write your message in a file called <code>[from-name]_to_[to-name].txt</code> with your name first and the name of the recipient second. Alice would write her message to Bob in <code>alice_to_bob.txt</code>.</li>
+    <li>Use the following command to encrypt your message and store the result in another file:
+    <pre><code><span class="three">$</span> openssl aes-256-cbc -e -in alice_to_bob.txt -out alice_to_bob.enc.txt
+<span class="three">enter aes-256-cbc encryption password:</span>
+<span class="three">Verifying - enter aes-256-cbc encryption password:</span></code></pre>
+    </li>
+    <li>The command will ask for a password and then verify it. Pick a good one and don't forget it!</li>
+    <li>Now you can upload the encrypted file to Slack. Send it in <span class="eight">#CSET-170</span>. Everyone will be able to see it, but only people with the password can read it.</li>
+    <li>Here's the hard part: figure out a way to get your password to your partner.</li>
+    <li>Once you receive an encrypted message, you can run this command to decrypt the file and store the original message in a third file:
+    <pre><code><span class="three">$</span> openssl aes-256-cbc -d -in alice_to_bob.enc.txt -out alice_to_bob.dec.txt</code></pre>
+    </li>
+  </ol>
+
+  <h3>Things To Think About</h3>
+
+  <ul>
+    <li>Open up the encrypted file in your text editor just to see what it looks like.</li>
+    <li>Also, try reading the man page for openssl. It's a long read because it can do a lot of stuff.</li>
+    <li>You used the AES algorithm with a key of 256 bits. Check the man page to see other symmetric algorithms.</li>
+    <li>If you're curious about how these things work, <a href="https://www.youtube.com/watch?v=O4xNJsjtN6E" target="_blank">watch this explanation of the AES algorithm</a>.</li>
+  </ul>
+
+  <hr>
+
+  <h2>
+    Part II: Asymmetric Encryption 
+  </h2>
+
+  <p>
+    The hardest part was getting the password to the other person, right? Symmetric encryption is perfect when you can keep the password or keyfile all to yourself, but not when you're trying to communicate with someone. So try that again but using a public/private keypair this time.
+  </p>
+
+  <h3>Generate Keys</h3>
+
+  <p>
+    You'll use openssl to generate keys. <strong class="eleven">Do NOT use the public/private keys you've already created for SSH.</strong> You'll create new temporary keys just for the purpose of this exercise, then you'll delete them. Add your name to the file so we know who it belongs to.
+  </p>
+ 
+  <pre><code><span class="three">$</span> openssl genpkey -algorithm RSA -out name_private.pem -pkeyopt rsa_keygen_bits:2048
+<span class="three">.........................................+++</span>
+<span class="three">...............................+++</span>
+<span class="three">$</span> openssl rsa -pubout -in name_private.pem -out name_public.pem
+<span class="three">writing RSA key<span></code></pre>
+
+  <ol>
+    <li>Open both key files in your editor to verify they're in the right format. The first lines should be:
+      <ul>
+        <li>Public = <code>-----BEGIN PUBLIC KEY-----</code></li>
+        <li>Private = <code>-----BEGIN PRIVATE KEY-----</code></li>
+      </ul>
+    </li>
+    <li>Now upload your <strong>public</strong> key to Slack so your partner can use it to send you a message.</li>
+  </ol>
+
+  <h3>Send Message</h3>
+
+  <p>
+    Go find your partner's public key on Slack and download it. You'll use it to encrypt your message. In this command, Alice is using Bob's public key to encrypt her message:
+  </p>
+
+  <pre><code><span class="three">$</span> openssl rsautl -encrypt -inkey bob_public.pem -pubin -in alice_to_bob.txt -out alice_to_bob.asym_enc.txt</code></pre>
+
+  <p>
+    Send the encrypted file over Slack for your partner to decrypt. Here, Bob is using his private key to decrypt Alice's message and store the result in a file:
+  </p>
+
+  <pre><code><span class="three">$</span> openssl rsautl -decrypt -inkey bob_private.pem -in alice_to_bob.asym_enc.txt -out alice_to_bob.asym_dec.txt</code></pre>
+
+  <h3>Things To Think About</h3>
+
+  <ul>
+    <li>If you got an error saying <span class="eleven">"data too large for key size"</span>, write a smaller message and try again. The message needs to be smaller than the key. (I told you there were better tools than openssl!)</li>
+    <li>Openssl can use stdin and stdout instead of reading/writing files. I just wanted you to be able to look at all the results.</li>
+    <li>Just because you got an encrypted message from someone, how could you know it was from them? If you have time, try this again but sign your message with your private key so they can verify the signature with your public key.</li>
+  </ul>
+
+  <hr>
+
+  <h2>What's Next?</h2>
+
+  <p>
+    Crypto has come a long way in the last few years, it's not just for developers. Many apps come with end-to-end encryption out of the box like <a href="https://signal.org/" target="_blank">Signal</a> for secure text messaging. You can also use a key server like <a href="https://keybase.io/" target="_blank">Keybase</a> to store your keys, publicly verify them, and allow all sorts of encrypted communications. The <a href="https://hackblossom.org/cybersecurity/" target="_blank">HackBlossom cybersecurity guide</a> has a whole list of other tools and practices you can look into.
+  </p>
+
+  <p>
+    Organizations like the <a href="https://ssd.eff.org/en" target="_blank">Electronic Frontier Foundation</a> have put together a ton of guides to help keep you secure. They also have <a href="https://ssd.eff.org/en/module/deep-dive-end-end-encryption-how-do-public-key-encryption-systems-work" target="_blank">a deep dive on how public key encryption works</a> to help you understand this lab better.
+  </p>
+</body>
+</html>
