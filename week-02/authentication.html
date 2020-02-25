@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Authentication</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../assets/slides.css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+
+# .eight[CSET 170:]
+## .eight[Security and Professional Ethics]
+
+---
+class: middle
+
+# Authentication
+
+---
+
+# Agenda
+
+1. [ ] [What is Authentication?](#auth)
+2. [ ] [Auth Guidelines](#guidelines)
+3. [ ] [Multi-Factor Auth](#mfa)
+4. [ ] [Cookie Based Sessions](#cookies)
+5. [ ] [Token Based Sessions](#tokens)
+
+---
+
+# Review
+
+- Security Objective?
+- Threat Modeling?
+- Encryption?
+- Symmetric vs Asymmetric?
+- Hashing?
+
+---
+name: auth
+
+# What is Authentication?
+
+### .eight[The process of verifying that something is what it claims to be.]
+
+---
+class: middle, center
+
+# .fourteen[How do we do that?]
+
+---
+
+# Authentication
+
+For a web application, we make a user submit:
+
+- public identification
+- one or more pieces of private information
+
+---
+class: middle, center
+
+![Portal Login Form](portal-login-form.png)
+
+---
+count: false
+
+# Authentication
+
+For a web application, we make a user submit:
+
+- public identification
+- one or more pieces of private information
+
+.fourteen[What other pieces of private information could we ask for?]
+
+---
+name: guidelines
+
+# Auth Guidelines
+
+.fourteen[Before we learn the guidelines, let's see how other apps handle it:]
+
+1. Open a new incognito window in your browser.
+2. Go to your example application's registration page.
+3. What info do they ask for to authenticate you?
+4. Without submitting the form, type in some fake data to see what rules they use to validate the info.
+
+---
+
+# Auth Guidelines
+
+- Email? Phone Number?
+- Pick your own username?
+- Password? If so, any rules for it?
+
+.fourteen[Which of our example apps are the most secure? Least?]
+
+---
+
+# Auth Guidelines
+
+[OWASP: Authentication Cheat Sheet](https://owasp.org/www-project-cheat-sheets/cheatsheets/Authentication_Cheat_Sheet.html)
+
+User IDs must be:
+
+- unique
+- case insensitive
+- for uber security, assign them and keep them secret
+
+Email as ID? [Make sure it's a valid email address!](https://owasp.org/www-project-cheat-sheets/cheatsheets/Input_Validation_Cheat_Sheet.html#Email_Address_Validation)
+
+---
+
+# Auth Guidelines
+
+Passwords should:
+
+- have a minimum length of at least 8 characters.
+- have a maximum length.
+- allow **all** unicode characters.
+
+Bonus Features:
+
+- Use a strength meter so users know a good password.
+- Use a service to block common or breached passwords.
+- Enforce credential rotation after a breach.
+
+---
+class: middle, center
+
+# [What makes a strong password?](https://xkcd.com/936/)
+
+---
+
+# Auth Guidelines
+
+.fourteen[What's wrong with the following error messages?]
+
+- Login Error: Incorrect password.
+- Registration Error: That username is already taken.
+- Forgot Password: We emailed you a password reset link.
+
+---
+count: false
+
+# Auth Guidelines
+
+.fourteen[What's wrong with the following error messages?]
+
+- Login Error: Incorrect password.
+- Registration Error: That username is already taken.
+- Forgot Password: We emailed you a password reset link.
+
+.eight[Error messages should be as generic as possible.]
+
+---
+
+# Auth Guidelines
+
+Other guidelines:
+
+- [Store passwords securely in database](https://owasp.org/www-project-cheat-sheets/cheatsheets/Password_Storage_Cheat_Sheet.html)
+- [Implement secure password recovery feature](https://owasp.org/www-project-cheat-sheets/cheatsheets/Forgot_Password_Cheat_Sheet.html)
+- Use safe functions to compare passwords
+- **Only transmit passwords over TLS!**
+
+---
+name: mfa
+
+# Multi-Factor Auth
+
+.eight[Authentication using two or more pieces of evidence.]
+
+Factors:
+
+- **Knowledge**: something the user and only the user knows
+- **Possession**: something the user and only the user has
+- **Inherence**: something the user and only the user is
+- **Location**: somewhere the user and only the user is
+
+[OWASP: Multi-Factor Cheatsheet](https://owasp.org/www-project-cheat-sheets/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html)
+
+---
+
+# Multi-Factor Auth
+
+Examples:
+
+- Basic web app asking for password (knowledge): .eleven[X]
+- ATMs require a debit card (possession) and a PIN (knowledge): .fourteen[√]
+- Bank app asking for password (knowledge) and PIN (knowledge): .eleven[X]
+- Laptop asking for password (knowledge) and fingerprint (inherence): .fourteen[√] 
+- Web app asking for password (knowledge) and one-time code sent to your phone (possession): .fourteen[√]
+
+---
+class: middle, center
+
+# .fourteen[Verification successful. Now what?]
+
+---
+
+# HTTP Is Stateless
+
+- Request &rarr; Response. The end.
+- A single request can send authentication info.
+- The next request is entirely separate.
+- If the next request requires authentication, it needs to be sent again.
+
+Option 1: Make the user fill out a login form every time they make a request.
+
+---
+class: middle, center
+
+# .eleven[Option 1 is bad.]
+
+---
+name: cookies
+
+# Cookie Based Sessions
+
+.eight[Piece of data stored on the client and sent back with every request.]
+
+- Make HTTP stateful!
+- Used for managing auth sessions, user preferences, or tracking users.
+- More modern APIs are [Web Storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) and [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- Session data is sent via Headers:
+  - response: .eight[Set-Cookie]
+  - request: .eight[Cookie]
+
+[MDN: Cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+
+---
+
+# Cookie Based Sessions
+
+1. User submits login form which sends .eight[POST] request to server.
+2. Server authenticates the user and sends a response with session info in the .eight[Set-Cookie] header.
+3. Client stores the cookie and will send it for all future requests in the .eight[Cookie] header.
+4. Server looks for cookie in request and authenticates it instead of the form.
+5. When user logs out, the client deletes the cookie so requests won't be authenticated.
+
+---
+class: middle, center
+
+![Flowchart of cookie based sessions](https://hackernoon.com/hn-images/0*nJchtd1pox7vvC92.)
+
+---
+
+# Cookie Based Sessions
+
+.fourteen[Pros]:
+- Sent automatically every request
+- Well known, so browsers can handle them well
+- Pretty simple
+
+.eleven[Cons]:
+- Sent automatically every request
+- Require storing session info on server
+- Aren't secure
+
+---
+name: tokens
+
+# Token Based Sessions
+
+.eight[Piece of data stored on the client and sent back with every request.]
+
+- Seems like cookies, but there's a subtle difference
+- Make HTTP stateless again!
+- Session data sent via .eight[Authorization] headers
+- Token can store much more than session id
+
+Many implementations, like [JWT](https://jwt.io/) and [OpenID](https://openid.net/)
+
+---
+
+# Token Based Sessions
+
+1. User submits login form which sends .eight[POST] request to server.
+2. Server authenticates the user and sends a response with a signed token.
+3. Client stores the token in local storage and has to send it for all future requests in the .eight[Authorization] header, or in .eight[POST] data.
+4. Server decodes the token and uses info to process the request.
+5. When user logs out, the client deletes the token.
+
+---
+class: middle, center
+
+![Flowchart of token based session](https://hackernoon.com/hn-images/0*JwpefmqYt1f9eUhd.)
+
+---
+
+# .fourteen[So What's The Difference?]
+
+- Tokens allow the server to be stateless.
+- Tokens allow authentication AND authorization info.
+- Tokens can be cryptographically secured.
+- Tokens can be used outside of traditional web browsers.
+
+---
+
+# Summary
+
+1. What is Authentication?
+2. Auth Guidelines
+3. Multi-Factor Auth
+4. Session Management
+5. Cookies vs Tokens
+
+Tomorrow, we'll talk about .eight[Authorization]!
+
+---
+
+# .fourteen[Practice]
+
+1. Run your flaskr application and open it in the browser.
+2. Open your dev tools to the Network tab, check "Preserve Log".
+3. Submit the login form. Can you see the form data in the request?
+4. What headers are sent with the response?
+
+---
+
+# .fourteen[Practice]
+
+1. Is Flask using Cookie or Token based sessions?
+2. Open the Application tab. Can you find where the session data is stored?
+3. Make a new request. Do you see the session in the headers?
+4. Log out. What happened to the session data?
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
