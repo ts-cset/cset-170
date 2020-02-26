@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Authorization</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../assets/slides.css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+
+# .eight[CSET 170:]
+## .eight[Security and Professional Ethics]
+
+---
+class: middle
+
+# Authorization
+
+---
+
+# Agenda
+
+1. [ ] [What is Authorization?](#auth)
+2. [ ] [Access Control Policies](#policies)
+3. [ ] [Group Exercise](#exercise)
+
+---
+name: auth
+
+# What is Authorization?
+
+Authentication is the process of verifying that something is what it claims to be.
+
+.eight[Authorization is the process of verifying that someone can can do what they are trying to do.]
+
+---
+
+# What is Authorization?
+
+- Rules for the code that define what .eight[functionality and data] the user may access.
+- Access controls allow users of different .eight[privileges] to use the same application.
+- This requires .eight[administrators] to manage the rules and grant priveleges.
+
+---
+class: middle, center
+
+# .fourteen[How do we do that?]
+
+---
+name: policies
+
+# Access Control Policies
+
+Different methods for different uses:
+
+- Role Based Access Control
+- Discretionary Access Control
+- Mandatory Access Control
+- Permission Based Access Control
+
+A single app can mix and match these strategies according to it's threat model.
+
+---
+class: middle, center
+
+# [OWASP: Access Control Cheat Sheet](https://owasp.org/www-project-cheat-sheets/cheatsheets/Access_Control_Cheat_Sheet.html)
+
+---
+name: exercise
+
+# .fourteen[Group Learning]
+
+Break into groups, one for each policy, and answer the following questions:
+
+1. How does your access control policy work?
+2. Generally, how secure is it?
+3. What are pros and cons?
+4. What real-world examples use this policy that can help us understand it?
+
+At the end of class, your group will present your policy.
+
+---
+
+# .fourteen[Further Discussion]
+
+Once we've learned about all the access control policies:
+
+- Which does the flaskr app use?
+- Which does your example app use?
+- What about the school portal?
+- Which seems easiest to implement on our own in Python?
+- Are there libraries that can handle this for us?
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
