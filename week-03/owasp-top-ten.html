@@ -1,0 +1,300 @@
+<!DOCTYPE html><html>
+  <head>
+    <title>OWASP Top Ten</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../assets/slides.css" />
+
+    <style type="text/css" media="screen">
+      .two-column {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+
+# .eight[CSET 170:]
+## .eight[Security and Professional Ethics]
+
+---
+class: middle
+
+# OWASP Top Ten
+
+---
+class: center, middle
+
+# .fourteen[How do we make our web applications secure?]
+
+---
+
+# Agenda
+
+1. [ ] [Review](#review)
+2. [ ] [Measuring Risk](#risk)
+3. [ ] [OWASP Top Ten](#top-ten)
+4. [ ] [Fix A Vulnerable App](#lab)
+
+---
+name: review
+
+# Review
+
+- .fourteen[Which phase of the SDLC deals with security?]
+- .fourteen[What is the format of a Security Objective?]
+- .fourteen[What two things are used to build a Threat Model?]
+
+---
+
+# Review
+
+What are the differences between:
+
+- .fourteen[Encryption and Hashing]
+- .fourteen[Symmetric and Asymmetric Encryption]
+- .fourteen[Authentication and Authorization]
+- .fourteen[Role-Based and Permission-Based Access Control]
+
+---
+name: risk
+
+# Measuring Risk
+
+When you're comparing vulnerabilities, how do you know which is more dangerous?
+
+Think of risk assessment for:
+
+- Insurance
+- Crime
+- Disease
+- Wild Animals
+
+---
+
+# Measuring Risk
+
+- **Exploitability**: How _easy_ is it to attack?
+- **Prevalence**: How _frequent_ is it found?
+- **Detectability**: How _noticeable_ is it?
+- **Impact**: How _significant_ is the damage?
+
+If a vulnerability scores high for each measure, then you should prioritize it as an important and urgent fix.
+
+Threat Levels: .eleven[Critical] | .thirteen[Serious] | Medium
+
+---
+name: top-ten
+
+# OWASP Top Ten
+
+[Open Web Application Security Project:](https://owasp.org/www-project-top-ten/)
+
+<blockquote>"The OWASP Top Ten is a standard awareness document for developers and web application security. It represents a broad consensus about the most critical security risks to web applications."</blockquote>
+
+Here's the list...
+
+---
+
+<ol>
+  <li><a href="#injn">Injection</a></li>
+  <li><a href="#auth">Broken Authentication</a></li>
+  <li><a href="#xss">Cross-Site Scripting</a></li>
+  <li><a href="#dor">Direct Object Reference</a></li>
+  <li><a href="#mcfg">Misconfiguration</a></li>
+  <li><a href="#data">Sensitive Data Exposure</a></li>
+  <li><a href="#acss">Bad Access Controls</a></li>
+  <li><a href="#csrf">Cross-Site Request Forgery</a></li>
+  <li><a href="#comp">Insecure Components</a></li>
+  <li><a href="#redr">Redirects</a></li>
+</ol>
+
+---
+name: injn
+
+# Injection
+
+Occurs when untrusted data is interpreted as code.
+
+.eleven[Exploitable] | .thirteen[Prevalent] | .thirteen[Detectable] | .eleven[Impact]
+
+- Any data provided by a user is "untrusted"
+- If the interpreter runs the data as code, then the attacker can run any code they want
+- **Sanitize all user input, escape data when you display it**
+
+[OWASP: Injection](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A1-Injection)
+
+---
+name: auth
+
+# Broken Authentication
+
+Occurs when an attacker can impersonate other users.
+
+.thirteen[Exploitable] | .eleven[Prevalent] | .thirteen[Detectable] | .eleven[Impact]
+
+- Flaws in authentication or session management
+- Attacker can compromise passwords, keys, or tokens
+- **Don't rely on custom implementation, use trusted solutions**
+
+[OWASP: Broken Authentication](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A2-Broken_Authentication.html)
+
+---
+name: xss
+
+# Cross-Site Scripting
+
+Occurs when untrusted data is interpreted by browser as code.
+
+.thirteen[Exploitable] | .eleven[Prevalent] | .eleven[Detectable] | .thirteen[Impact]
+
+- Like injection, interpreting unsafe data as code
+- Unlike injection, code is run locally by user's browser
+- **Sanitize and escape data, use proper encodings and headers**
+
+[OWASP: XSS](https://owasp.org/www-community/attacks/xss/)
+
+---
+name: dor
+
+# Direct Obeject Reference
+
+Occurs when application exposes info about how it works.
+
+.eleven[Exploitable] | .thirteen[Prevalent] | .eleven[Detectable] | .thirteen[Impact]
+
+- Developer might reveal file or directory names, usernames or IDs, database tables, etc.
+- Attacker can modify requests to other objects
+- **Use indirect references and always check access**
+
+[OWASP: ](https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html)
+
+---
+name: mcfg
+
+# Security Misconfiguration
+
+Occurs when attacker gains access because of bad/missing settings.
+
+.eleven[Exploitable] | .thirteen[Prevalent] | .eleven[Detectable] | .thirteen[Impact]
+
+- A common example is not changing default usernames and passwords
+- Can occur accross all levels of the tech stack: libraries to operating systems
+- **Use current, patched versions and follow the documentation**
+
+[OWASP: Security Misconfig](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A6-Security_Misconfiguration.html)
+
+---
+name: data
+
+# Sensitive Data Exposure
+
+Occurs when attackers can view sensitive data
+
+Exploitable | .thirteen[Prevalent] | .eleven[Detectable] | .eleven[Impact]
+
+- Examples are financial data, tax information, health records, credentials
+- Data can be captured at rest or in transit
+- **Only store what you need and use heavy encryption**
+
+[OWASP: Data Exposure](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A3-Sensitive_Data_Exposure.html)
+
+---
+name: acss
+
+# Bad Access Controls
+
+Occurs when an application doesn't make appropriate access checks.
+
+.eleven[Exploitable] | .thirteen[Prevalent] | .thirteen[Detectable] | .thirteen[Impact]
+
+- Even if a UI blocks access, an attacker can forge requests to the server
+- Authentication is not enough
+- **Preform access checks across all levels of the stack**
+
+[OWASP: Bad Access Controls](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A5-Broken_Access_Control.html)
+
+---
+name: csrf
+
+# Cross-Site Request Forgery
+
+Occurs when an attacker forces a victim to send an unintended request.
+
+.thirteen[Exploitable] | .thirteen[Prevalent] | .eleven[Detectable] | .thirteen[Impact]
+
+- The attacker gets an authenticated and authorized user to do what they want
+- Victim's browser sends a valid request, so the application allows it
+- **Generate tokens for each response-request pair**
+
+[OWASP: CSRF](https://owasp.org/www-community/attacks/csrf)
+
+---
+name: comp
+
+# Insecure Components
+
+Occurs when third-party tools have vulnerabilities.
+
+.thirteen[Exploitable] | .eleven[Prevalent] | Detectable | .thirteen[Impact]
+
+- Applications rely on third-party code and run it with full privileges
+- Attackers might see vulnerabilities before you do and exploit them
+- **Only use what you have to and continuously audit them**
+
+[OWASP: Insecure Components](https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities.html)
+
+---
+name: redr
+
+# Redirects
+
+Occurs when applications send users to untrusted destinations.
+
+.eleven[Exploitable] | .thirteen[Prevalent] | .thirteen[Detectable] | .eleven[Impact]
+
+- Attackers can modify input so that users are sent to malicious sites
+- The user continues to trust the new destination
+- **Don't use redirects, but if you must, don't trust user input to get there**
+
+[OWASP: Unvalidated Redirects](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html)
+
+---
+name: lab
+
+# .fourteen[Fix A Vulnerable App]
+
+Introducing the NodeGoat Project:
+
+- **RetireEasy** Employee Retirement Savings Management
+- Basic CRUD application with authentication and RBAC
+- Built with Node, Express, and MongoDB
+
+.eleven[It suffers from all of the OWASP Top Ten vulnerabilities!]
+
+---
+
+# .fourteen[Fix A Vulnerable App]
+
+1. Get the app set up and running.
+2. Follow the tutorial to learn about each vulnerability.
+3. Use the feature as a regular user, then as an attacker.
+4. Then follow the steps to fix the problem, if possible.
+5. Try to attack the feature again. Were you stopped?
+
+---
+class: middle, center
+
+# [Lab: Fixing Vulnerabilities](lab_fixing-vulnerabilities.html)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

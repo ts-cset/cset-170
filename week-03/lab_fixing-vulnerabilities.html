@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab 03: Fixing Vulnerabilities</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../assets/slides.css" />
+
+  <style type="text/css" media="screen">
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: calc(0.5rem + 1.75vw);
+      line-height: 1.4;
+      max-width: 1000px;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    p, ol, ul, pre, hr,
+    table, blockquote {
+      margin-bottom: 3rem;
+    }
+
+    li ol, li ul {
+      margin-bottom: 0;
+    }
+
+    ol, ul, pre, table, blockquote {
+      padding: 0 1rem;
+    }
+
+    code {
+      background: var(--nord6);
+      border: 1px solid var(--nord5);
+      color: var(--nord10);
+      padding: 0 0.5rem;
+    }
+
+    pre code {
+      display: block;
+      font-size: 80%;
+      padding: 2rem;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Lab: Fixing Vulnerabilities
+  </h1>
+
+  <hr>
+
+  <p>
+    You're going to install and run a pre-built web application and see how secure it is. The name of the lab should be a clue: <em>it's not</em>. And you're going to fix it.  
+  </p>
+
+  <hr>
+
+  <h2>
+    Setup
+  </h2>
+
+  <p>
+    Go to GitHub and fork <a href="https://github.com/OWASP/NodeGoat" target="_blank">the NodeGoat project</a> so you can work on it. Clone your forked repo, <strong>not the original or you can't submit your work!</strong>
+  </p>
+
+  <pre><code>
+$ git clone https://github.com/YOUR-USERNAME/NodeGoat
+$ cd NodeGoat
+  </code></pre>
+
+  <p>
+    Now install MongoDB and get it running.
+  </p>
+
+  <pre><code>
+$ brew tap mongodb/brew
+$ brew install mongodb-community
+$ brew services start mongodb-community
+  </code></pre>
+
+  <p>
+    Open the <code>config/env/development.js</code> file in your editor and uncomment line 8. This points the app to your local Mongo server.
+  </p>
+
+  <pre><code>
+  // remove the comment from this line: 
+  db: "mongodb://localhost:27017/nodegoat",
+  </code></pre>
+
+  <p>
+    Finally, you'll run the following commands to install the necessary dependencies and get the project running. You'll need a current version of Node and npm, run <code>brew install node</code> if you don't.
+  </p>
+
+  <pre><code>
+$ npm install
+$ npm run db:seed
+$ npm start
+  </code></pre>
+
+  <p>
+    You should now be able to see the app running on your machine at <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>. You can login with any of the following credentials:
+  </p>
+
+  <ul>
+    <li><strong>username : password</strong></li>
+    <li>user1 : User1_123</li>
+    <li>user2 : User2_123</li>
+    <li>admin : Admin_123</li>
+  </ul>
+
+  <hr>
+
+  <h2>
+    Fix It!
+  </h2>
+
+  <p>
+    Once it's running, log in as a user and as an admin and figure out how the app is supposed to work. Then take a few minutes to look through the code and see if you can get a basic understanding of what it's doing. Most of the JavaScript code you'll need to work with is contained in the <code>app</code> directory.
+  </p>
+
+  <p>
+    On the login page, there is <a href="http://localhost:4000/tutorial">a link to the tutorial</a>. Read through each vulnerability and follow along with lecture slides to understand it. Watch the videos they provide for each about what an attacker can do and try them on your local version. Think like a hacker and try to break it!
+  </p>
+
+  <hr>
+
+  <h2>
+    Grading
+  </h2>
+
+  <p>
+    Make a new new branch in your repo called <code>owasp-fixes</code> that will contain all of your changes. You should be committing frequently since this is a fragile app and you're actively trying to break it. When you're done, push the branch to GitHub and submit a PR to your fork, <strong>not the real repo</strong>.
+  </p>
+
+  <p>
+    Submit a link to your repo in Slack on the #cset-170 channel to help each other out and for me to grade the lab.
+  </p>
+
+</body>
+</html>
