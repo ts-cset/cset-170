@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Injection and Auth Attacks</title>
+
+    <link rel="stylesheet" href="../assets/slides.css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle
+
+# .eight[CSET 170:]
+## .eight[Security and Professional Ethics]
+
+---
+class: middle
+
+# Injection and Auth Attacks
+
+---
+class: center, middle
+
+# .fourteen[How do we make our web applications secure?]
+
+---
+
+# Agenda
+
+1. [ ] [Review](#review)
+2. [ ] [Injection](#injection)
+3. [ ] [Broken Authentication](#auth)
+4. [ ] [Deep Dive Into SQL Injection](#sql)
+
+---
+name: review
+
+# Review
+
+.fourteen[What are the four measures of risk for a vulnerability?]
+
+--
+count: false
+
+1. Exploitability
+2. Prevelance
+3. Detectability
+4. Impact
+
+---
+
+# Review
+
+.fourteen[Which of the following are true statements?]
+
+1. Usernames need to be unique.
+2. Passwords should be salted and hashed before storing.
+3. Passwords need to contain numbers and symbols.
+4. Passwords should allow all valid Unicode characters.
+5. Error messages should be as helpful as possible.
+
+---
+count: false
+
+# Review
+
+.fourteen[Which of the following are true statements?]
+
+1. Usernames need to be unique.
+2. Passwords should be salted and hashed before storing.
+3. .eleven[Passwords need to contain numbers and symbols.]
+4. Passwords should allow all valid Unicode characters.
+5. .eleven[Error messages should be as helpful as possible.]
+
+---
+name: injection
+
+# Injection
+
+.fourteen[What three types of injection attack did you fix?]
+
+--
+count: false
+
+1. Server-Side JavaScript
+2. NoSQL
+3. Logs
+
+--
+
+What are some examples of what an attacker can do using these techniques?
+
+---
+
+# Injection
+
+SSJS Fixes:
+
+- Avoid using .eight[eval()], .eight[setTimeout()], .eight[setInterval()], and .eight[Function()]`
+- Use dedicated parse functions when converting input
+- Use the [strict mode directive](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
+
+---
+
+# Injection
+
+NoSQL Fixes:
+
+- Properly parse and validate user input
+- Use prepared statements instead of string concatenation
+
+---
+
+# Injection
+
+Log Fixes:
+
+- Escape dangerous characters according to context
+- For example, the .eight[\r\n] characters for Carriage Return and Line Feed
+- Each context requires a different encoding: URLs, HTML, JavaScript, JSON, SQL, etc.
+
+---
+name: auth
+
+# Broken Authentication
+
+.fourteen[What were the issues with the authentication implementation?]
+
+--
+
+- Passwords stored in plain text.
+- Cookies aren't set to expire.
+- Session IDs are reused for the same user.
+- Password validation encouraged weak passwords.
+- Error messages were not generic.
+
+---
+
+# Broken Authentication
+
+Look at the documentation for the following modules:
+
+- [bcrypt](https://www.npmjs.com/package/bcrypt#usage)
+- [express-session](https://www.npmjs.com/package/express-session#api)
+
+---
+name: sql
+class: middle, center
+
+# [Example of SQL Injection Attack](https://www.youtube.com/watch?v=ciNHn38EyRc)
+
+---
+
+# SQL Injection Demo
+
+I made a quick demo using Flask for you to try out.
+
+- Clone [the sql-injection-demo repo](https://github.com/ts-cset/sql-injection-demo)
+- Follow the README to get the app installed and running
+- Try to follow along with the Computerphile video and make the same attacks
+
+---
+
+# SQL Injection Demo
+
+.fourteen[Your Goal: Get the users' data to appear below the search results.]
+
+NOTE: I didn't use the same tech stack as the video, so you'll have to use all your tricks to figure it out :)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
