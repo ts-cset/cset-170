@@ -7,8 +7,40 @@
   <link rel="stylesheet" href="../assets/slides.css" />
 
   <style type="text/css" media="screen">
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: calc(0.5rem + 1.75vw);
+      line-height: 1.4;
+      max-width: 1000px;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    p, ol, ul, pre, hr,
+    table, blockquote {
+      margin-bottom: 3rem;
+    }
+
+    li ol, li ul {
+      margin-bottom: 0;
+    }
+
+    ol, ul, pre, table, blockquote {
+      padding: 0 3rem;
+    }
+
     code {
-      color: var(--nord8);
+      background: var(--nord6);
+      border: 1px solid var(--nord5);
+      color: var(--nord10);
+      font-size: calc(0.4rem + 1.75vw);
+      padding: 0 0.5rem;
+    }
+
+    pre code {
+      display: block;
+      font-size: 80%;
+      padding: 2rem;
+      overflow-x: auto;
     }
   </style>
 </head>
@@ -20,40 +52,107 @@
   <hr>
 
   <p>
-    You've spent some time learning about OWASP's list of common vulnerabilities and how to prevent them, but now it's time to get into the mind of an attacker. Learning to think from this perspective will help you build more secure applications.
+    You've spent some time learning about OWASP's list of common vulnerabilities and how to prevent them, but now it's time to get into the mind of an attacker. You're going to use all of your security knowledge to test a running application and see how vulnerable it is. Learning to think from this perspective will help you build more secure applications.
   </p>
 
   <hr>
 
   <h2>
-    Setup
+    Overview
+  </h2>
+
+  <p>
+    Your group will set up a shared web application running on the internet as well as a local version on each of your computers. As a group, you're going to try and complete as many challenges as you can to find this application's vulnerabilities.
+  </p>
+
+  <p>
+    Everything you need to know about this project is on <a href="https://pwning.owasp-juice.shop/" target="_blank">this documentation site</a>. It's in a book format and you can read through some of the important chapters on your own:
+  </p>
+
+  <ul>
+    <li><strong>Introduction</strong>: an overview of the documentation</li>
+    <li><strong>Architecture overview</strong>: how is the Juice Shop application built?</li>
+    <li><strong>Vulnerability categories</strong>: shows which challenges relate to vulnerabilities we've already learned</li>
+    <li><strong>Challenge tracking</strong>: overview of how the Score Board works</li>
+    <li><strong>Walking the "happy path"</strong>: helps you understand how the app works</li>
+    <li><strong>Challenge Hunting</strong>: an overview of all the challenges</li>
+  </ul>
+
+  <hr>
+
+  <h2>
+    Group Setup
   </h2>
 
   <ol>
-    <li>Split into groups of four.</li>
-    <li>One of you should fork the <a href="https://github.com/bkimminich/juice-shop" target="_blank">OWASP Juice Shop repo</a></li>
-    <li>The repo owner should add the other three members as contributors in the repo settings.</li>
-    <li>All four of you should clone that fork.</li>
-    <li>The repo owner should follow the "Deploy on Heroku" Setup instructions: sign up for a free account, click the purple button, follow Heroku's instructions.</li>
-    <li>All four of you should also follow the "From Sources" Setup instructions on your own machines. <em>You should already have Node installed.</em></li>
+    <li>Designate one of your group to be the team leader.</li>
+    <li>The leader should fork the <a href="https://github.com/bkimminich/juice-shop" target="_blank">OWASP Juice Shop repo</a> to your own GitHub account.</li>
+    <li>Send the link to your group and all of you clone the fork to your own machines.</li>
+    <li>The leader should also follow the instructions to sign up for a free Heroku account and log in.</li>
+    <li>Then, on your fork, hit the <code>Deploy to Heroku</code> button
+      <ol>
+        <li>It will open a tab on Heroku's site</li>
+        <li><strong>Don't enter an app name, one will be created automatically.</strong></li>
+        <li>Select United States as the region.</li>
+        <li>Click the <code>Deploy app</code> button.</li>
+        <li>Wait for build to complete (this can take a while...)</li>
+      </ol>
+    </li>
   </ol>
 
   <p>
-    You should now be able to see the app running on all four of your machines at <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> and also on the internet at the address Heroku provided.
+    Once the build is complete, click the <code>View</code> button. This will open your group's deployed site. Welcome to the Juice Shop! Copy the URL and share it in your group's Slack channel.
   </p>
 
   <hr>
 
   <h2>
-    Start Hacking!
+    Local Setup
   </h2>
 
   <p>
-    <a href="https://bkimminich.gitbooks.io/pwning-owasp-juice-shop/content/">Pwning OWASP Juice Shop</a> is a companion guide to the application. Look over the introductory chapters to understand what you're working on and why.
+    While you are waiting for the Heroku build to complete. You can get your local app set up.
+  </p>
+
+  <ol>
+    <li><code>cd</code> to your cloned repo</li>
+    <li>Run <code>npm install</code></li>
+    <li>Run <code>npm start</code></li>
+    <li>Open the app in your browser at <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></li>
+  </ol>
+
+  <p>
+    <strong>Note:</strong> The public app hosted on Heroku is for your group to show your overall progress, however it's meant for ONE person to use at a time.
   </p>
 
   <p>
-    Try to find some vulnerabilities on your own as a group first, but you can also visit the Scoreboard to get some hints about the challenges. You can visit the <a href="#">/#/score-board</a> page in your running app, local and online. If the hints aren't enough, the second part of the guide will walk you through them.
+    When you first open the app, a modal window pops up and tells you about the project. The red graduation cap icon will start a tutorial popup. Keep clicking on the popup to get the next hint.
+  </p>
+
+  <p>
+    The first challenge is to find the Score Board page on this website that tells you about all the other challenges and keeps track of your progress. Guess the URL if you can, or better yet, open the Chrome DevTools and find the URL somewhere in the JavaScript code on the Sources tab (hint: click the `{}` button to pretty print the minified source code with indentation and newlines).
+  </p>
+
+  <hr>
+
+  <h2>
+    Instructions
+  </h2>
+
+  <p>
+    As a group, you are trying to complete as many of the challenges as you can. Each challenge is listed in the Score Board page and is ranked by difficulty: 1 star for easy challenges, 6 for the hardest ones. Click the number of stars to get a filtered list of all the challenges in that difficulty. The app will track which you've completed.
+  </p>
+
+  <p>
+    There are two ways your group can accomplish this, I'll let you decide. Option 1: one of you opens the app on Heroku and acts as the driver while the rest of you are watching through a Slack call and helping navigate. You can all work on one challenge at a time to make sure you're all on the same page as the navigators follow along on their local version. Option 2: you keep a group call going but split up, each working on your own challenge on your local app. When you've solved it, you can open the Heroku app and walk your group through what you did.
+  </p>
+
+  <p>
+    Either way, you each can track individual progress locally and group progress on Heroku.
+  </p>
+
+  <p>
+    <a href="https://pwning.owasp-juice.shop/part2/" target="_blank">This chapter</a> in the book will give you hints if you are stuck, but try attempting them a few times on your own first. The Score Board page also has the red graduation cap icon for an interactive tutorial for some of the challenges, too!
   </p>
 
   <p>
